@@ -1,6 +1,7 @@
 ﻿using tabuleiro;
 using System.Collections.Generic;
 using xadrez;
+using System.Xml;
 namespace xadrez_console{
     class Tela{
         public static void imprimirPartida(PartidaDeXadrez partida)
@@ -10,10 +11,18 @@ namespace xadrez_console{
             imprimirPecasCapturadas(partida);
             System.Console.WriteLine();
             Console.WriteLine("Turno: " +partida.turno);
-            Console.WriteLine("Jogador da vez: peça " + partida.jogadorAtual);
-            if(partida.xeque)
+            if(!partida.terminada)
             {
-            System.Console.WriteLine("Você está em xeque");
+                Console.WriteLine("Jogador da vez: peça " + partida.jogadorAtual);
+                if(partida.xeque)
+                {
+                System.Console.WriteLine("Você está em xeque");
+                }
+            }
+            else
+            {
+                System.Console.WriteLine("XEQUEMATE!");
+                System.Console.WriteLine("Vencedor: "+partida.jogadorAtual);
             }
         }
 
