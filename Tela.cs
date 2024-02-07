@@ -1,4 +1,5 @@
 ﻿using tabuleiro;
+using xadrez;
 namespace xadrez_console{
     class Tela{
         public static void imprimirTabuleiro(Tabuleiro tab){
@@ -32,6 +33,13 @@ namespace xadrez_console{
                 System.Console.Write(peca);
                 Console.ForegroundColor = aux;
             }
+        }
+        public static PosicaoXadrez lerPosicaoXadrez()
+        {
+            string s = Console.ReadLine();
+            char Coluna = s[0];
+            int Linha = int.Parse(s[1] + " ");
+            return new PosicaoXadrez(Coluna,Linha);
         }
     }
     
