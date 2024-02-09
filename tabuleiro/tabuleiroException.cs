@@ -1,9 +1,9 @@
-﻿using System;
+﻿namespace xadrez_console;
 
-namespace tabuleiro {
-    class TabuleiroException : Exception {
+class tabuleiroException :Exception
+{
+    public tabuleiroException(string msg) :base(msg)
+    {
 
-        public TabuleiroException(string msg) : base(msg) {
-        }
     }
 }
