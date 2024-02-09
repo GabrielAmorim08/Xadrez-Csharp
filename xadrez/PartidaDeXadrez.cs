@@ -83,21 +83,10 @@ class PartidaDeXadrez
     public void realizaJogada(Posicao origem, Posicao destino)
     {
         Peca pecaCapturada = executaMovimento(origem,destino);
-        Peca p = tab.peca(destino);
         if(estaEmXeque(jogadorAtual))
         {
             desfazMovimento(origem,destino,pecaCapturada);
             throw new tabuleiroException("Você não pode se colocar em xeque!");
-        }
-        
-        // #jogadaespecial promocao
-
-        if(p is Peao)
-        {
-            if(p.cor == Cor.Branca && destino.Linha == 0 || p.cor == Cor.Preta && destino.Linha == 7)
-            {
-                
-            }
         }
         if(estaEmXeque(adversaria(jogadorAtual)))
         {
@@ -115,8 +104,7 @@ class PartidaDeXadrez
             mudaJogador();
         }
     
-
-       
+        Peca p = tab.peca(destino);
 
         // #jogadaespecial en passant
 
