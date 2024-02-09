@@ -14,6 +14,7 @@ class PartidaDeXadrez
     private HashSet<Peca> pecas;
     private HashSet<Peca> capturadas;
     public bool xeque {get;private set;}
+    public Peca vulneravelEnPassant{get;private set;}
     public PartidaDeXadrez()    
     {
         tab = new Tabuleiro(8,8);
@@ -22,6 +23,7 @@ class PartidaDeXadrez
         terminada = false;
         pecas = new HashSet<Peca>();
         capturadas = new HashSet<Peca>();
+        vulneravelEnPassant = null;
         xeque = false;
         colocarPecas();
     }
@@ -57,6 +59,25 @@ class PartidaDeXadrez
             T.incrementarMovimento();
             tab.colocarPeca(T,destinoT);
         }
+        // #jogadaespecial en passant
+        if(p is Peao)
+        {
+            if(origem.Coluna != destino.Coluna && pecaCapturada == null)
+            {
+                Posicao posP;
+                if(p.cor == Cor.Branca)
+                {
+                    posP = new Posicao(destino.Linha +1, destino.Coluna);
+
+                }
+                else
+                {
+                    posP = new Posicao(destino.Linha - 1, destino.Coluna);
+                }
+                pecaCapturada = tab.retirarPeca(posP);
+                capturadas.Add(pecaCapturada);
+            }
+        }
         return pecaCapturada;
     }
     public void realizaJogada(Posicao origem, Posicao destino)
@@ -81,6 +102,19 @@ class PartidaDeXadrez
         else{
             turno++;
             mudaJogador();
+        }
+    
+        Peca p = tab.peca(destino);
+
+        // #jogadaespecial en passant
+
+        if(p is Peao && (destino.Linha == origem.Linha -2 || destino.Linha == origem.Linha+ 2))
+        {
+            vulneravelEnPassant = p;
+        }
+        else
+        {
+            vulneravelEnPassant = null;
         }
     }
     public void desfazMovimento(Posicao origem, Posicao destino, Peca pecaCapturada)
@@ -113,6 +147,27 @@ class PartidaDeXadrez
             T.DecrementarMovimento();
             tab.colocarPeca(T,origemT);
         }
+
+        // #jogadaespecial en passant
+        if(p is Peao)
+        {
+            if(origem.Coluna != destino.Coluna && pecaCapturada == vulneravelEnPassant)
+            {
+                Peca peao = tab.retirarPeca(destino);
+                Posicao posP;
+                if(p.cor == Cor.Branca)
+                {
+                    posP = new Posicao(3,destino.Coluna);
+
+                }
+                else
+                {
+                    posP = new Posicao(4,destino.Coluna);
+                }
+                tab.colocarPeca(peao,posP);
+            }
+        }
+        
     }
     public void validarPosicaoOrigem(Posicao pos)
     {
